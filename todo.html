@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo List</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    .todo-container {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .todo-item {
+      background: #f9f9f9;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    h4 {
+      margin: 0;
+      font-size: 16px;
+      flex-grow: 1;
+    }
+
+    .input-container {
+      display: flex;
+      gap: 5px;
+    }
+
+    input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    button {
+      padding: 8px 12px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .add-btn {
+      background: #28a745;
+      color: white;
+    }
+
+    .add-btn:hover {
+      background: #218838;
+    }
+
+    .delete-btn {
+      background: #dc3545;
+      color: white;
+    }
+
+    .delete-btn:hover {
+      background: #c82333;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Todo List</h1>
+
+    <div id="todos" class="todo-container">
+      <div class="todo-item">
+        <h4>1. Take class</h4>
+        <button class="delete-btn" onclick="deleteTodo(this)">Delete</button>
+      </div>
+      <div class="todo-item">
+        <h4>2. Go out to eat</h4>
+        <button class="delete-btn" onclick="deleteTodo(this)">Delete</button>
+      </div>
+    </div>
+
+    <div class="input-container">
+      <input id="inp" type="text" placeholder="Enter a new todo">
+      <button class="add-btn" onclick="addTodo()">Add Todo</button>
+    </div>
+  </div>
+
+  <script>
+    function addTodo() {
+      const inputEl = document.getElementById("inp");
+      const todoText = inputEl.value.trim();
+      if (todoText === '') {
+        alert('Please enter a todo item.');
+        return;
+      }
+      const parentEl = document.getElementById("todos");
+      const newTodo = document.createElement('div');
+      newTodo.classList.add("todo-item");
+      const newHeading = document.createElement('h4');
+      newHeading.textContent = todoText;
+      const newButton = document.createElement('button');
+      newButton.textContent = 'Delete';
+      newButton.classList.add("delete-btn");
+      newTodo.appendChild(newHeading);
+      newTodo.appendChild(newButton);
+      parentEl.appendChild(newTodo);
+      newButton.addEventListener("click", () => {
+        newTodo.remove();
+        updateTodoNumbers();
+      });
+      updateTodoNumbers();
+      inputEl.value = '';
+    }
+
+    function updateTodoNumbers() {
+      const todos = document.querySelectorAll(".todo-item");
+      todos.forEach((todo, index) => {
+        const text = todo.querySelector("h4").textContent.replace(/^\d+\.\s/, '');
+        todo.querySelector("h4").textContent = `${index + 1}. ${text}`;
+      });
+    }
+
+    function deleteTodo(btn) {
+      btn.parentElement.remove();
+      updateTodoNumbers();
+    }
+  </script>
+</body>
+
+</html>
